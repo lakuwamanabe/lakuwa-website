@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>グループホーム ハピネス</title>
+  <style>
+    body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 0; background: #fafafa; }
+header {
+  background: #f8f0ff;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* ロゴ部分 */
+.logo {
+  flex: 0 0 160px;  /* ← 漢字6文字が入る程度で固定幅 */
+  font-size: 20px;
+  font-weight: bold;
+  text-align: left;
+}
+
+header nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  gap: 20px;              /* 項目同士の余白 */
+  flex-wrap: wrap;        /* ← はみ出したら改行 */
+}
+
+header nav a {
+  white-space: nowrap;    /* ← 項目名の途中で改行させない */
+  text-decoration: none;
+  color: #333;
+  font-size: 15px;
+  padding: 4px 6px;
+}
+
+/* 電話番号 */
+.tel {
+  font-size: 14px;
+  color: #333;
+  margin-left: 20px; /* ← ロゴや項目との間隔 */
+  margin-right: 20px; /* ← スクロールバーに被らない余白 */
+  white-space: nowrap; /* 電話番号を折り返さない */
+}
+
+/* ハンバーガーボタン */
+.menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 20px; /* 右端余白 */
+}
+
+/* スマホ表示 */
+@media (max-width: 768px) {
+  header nav {
+    display: none; /* ←最初は必ず非表示 */
+    flex-direction: column;
+    position: absolute;
+    top: 60px;
+    right: 20px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  header nav.active {
+    display: flex;
+  }
+
+  .tel {
+    display: none;
+  }
+
+  .menu-btn {
+    display: block;
+  }
+}
+
+main {
+  padding-top: 80px; /* 固定ヘッダー対策 */
+}
+
+section {
+  padding: 80px 20px;
+  border-bottom: 1px solid #ddd;
+  scroll-margin-top: 80px;
+}
+
+
+    .hero {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  background-color: #f9f3ec; /* ←画像から拾ったベージュ系 */
+  font-family: sans-serif;
+}
+
+/* 白背景のボックス */
+.content-box {
+  background-color: #ffffff; /* 白 */
+  padding: 2rem;
+  margin: 2rem auto;
+  max-width: 800px;  /* 横幅を少し制限して読みやすく */
+  border-radius: 8px; /* 角を少し丸くする（不要なら消してOK） */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1); /* うっすら影をつける（不要なら消してOK） */
+}
+.hero {
+max-width: none;   /* ← ここがポイント：幅制限を解除 */
+margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.hero-img {
+  width: 100%;
+  height: auto;
+  max-width: none;  /* 拡大を許可 */
+  display: block;
+}
+.hero h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+    .btn { display: inline-block; padding: 10px 20px; border: 2px solid #c06; border-radius: 25px; color: #c06; text-decoration: none; }
+    section { padding: 40px 20px; max-width: 900px; margin: auto; }
+    h2 { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #ccc; padding-bottom: 5px; }
+    table { border-collapse: collapse; margin: 20px auto; width: 80%; }
+    table, th, td { border: 1px solid #666; padding: 8px; text-align: center; }
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 横3列 */
+  gap: 0; /* 画像はくっつける */
+  justify-items: center;
+}
+
+.img-box {
+  aspect-ratio: 1 / 1; /* 正方形の枠 */
+  width: 100%;
+  max-width: 300px; /* 3列の幅の目安（調整可） */
+  background: #f9f3ec; /* 余白部分の背景 */
+  overflow: hidden;
+}
+
+.img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 横長・正方形 → 余白あり */
+  object-position: center; /* 中央配置 */
+  display: block;
+  background: #f9f3ec;
+}
+
+/* 縦長 → 横いっぱいにトリミング */
+.img-box img.tall {
+  object-fit: cover;
+  object-position: center 50%; /* 基本は中央 */
+}
+
+.img-box img.zoom {
+  object-fit: contain;
+  transform-origin: center center;
+}
+.img-box img.zoom-120 { transform: scale(1.2); }
+.img-box img.zoom-130 { transform: scale(1.3); }
+.img-box img.zoom-140 { transform: scale(1.4); }
+.img-box img.zoom-150 { transform: scale(1.5); }
+
+/* 縦方向を個別に調整したい場合 */
+.img-box img.tall.pos10 { object-position: center 10%; }
+.img-box img.tall.pos30 { object-position: center 30%; }
+.img-box img.tall.pos70 { object-position: center 70%; }
+.img-box img.tall.pos90 { object-position: center 90%; }
+/* 縦方向を個別に調整したい場合 */
+.img-box img.w10 {  transform-origin: 10% center; }
+.img-box img.w30 {  transform-origin: 30% center; }
+.img-box img.w70 {  transform-origin: 70% center; }
+.img-box img.w90 {  transform-origin: 90% center; }
+
+    .news-list { list-style: none; padding: 0; }
+    .news-list li { padding: 5px 0; border-bottom: 1px solid #ddd; }
+
+.room-section {
+  max-width: 1600px; /* sectionの900制限を解除して広げる */
+  margin: 0 auto;
+}
+/* 部屋紹介ギャラリー */
+.room-gallery {
+  display: grid;
+
+  /* デフォルトは最大3列 */
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 24px;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* 画面が中くらいのとき → 2列 */
+@media (max-width: 800px) {
+  .room-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* スマホなど狭いとき → 1列 */
+@media (max-width: 400px) {
+  .room-gallery {
+    grid-template-columns: 1fr;
+  }
+}/* 画像の枠（4:3固定） */
+.room-box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #f9f9f9;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* 画像 */
+.room-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* タイトルと説明 */
+.room-info {
+  text-align: center;
+  margin-top: 10px;
+}
+
+.room-info h3 {
+  font-size: 1.2rem;
+  margin: 5px 0;
+}
+
+.room-info p {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0;
+}
+.schedule {
+  max-width: 500px;          /* 全体の横幅 */
+  margin: 0 auto;
+  padding: 20px;
+  font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+  color: #333;
+}
+
+.schedule-item {
+  display: grid;
+  grid-template-columns: 80px 1fr;  /* 左に時間、右に内容 */
+  align-items: start;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.schedule-item time {
+  font-size: 18px;
+  font-weight: bold;
+  color: #7dbb3c;           /* 緑色 */
+  border-right: 2px solid #7dbb3c;
+  padding-right: 10px;
+  text-align: right;
+}
+
+.schedule-item p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+
+/* セクション全体 */
+.meal-section {
+  max-width: 900px;   /* 最大幅 */
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+/* ギャラリー（2枚並び→1枚落ち） */
+.meal-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 32px;  /* アイテム間の余白 */
+}
+
+/* 各アイテム */
+.meal-item {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+/* 画像調整 */
+.meal-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  object-fit: cover;
+}
+
+/* タイトル */
+.meal-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+/* 説明文 */
+.meal-item p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  text-align: left;
+}
+
+/* セクション全体 */
+.target {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+/* 見出し */
+.target h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+
+.target h3 {
+  text-align: center;
+  font-size: 1.4rem;
+  margin: 20px 0;
+}
+
+/* 横並びレイアウト */
+.target-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;  /* 画像と文章の間隔 */
+  flex-wrap: wrap; /* スマホ時は縦積み */
+}
+
+/* 画像 */
+.target-image {
+  flex: 1 1 200px;
+  text-align: center;
+}
+.target-image img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* テキスト */
+.target-text {
+  flex: 2 1 400px;
+  background: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.price-section {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.price-section h2 {
+  font-size: 28px;
+  margin-bottom: 40px;
+  border-bottom: 2px dashed #6c3;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.price-box {
+  margin-bottom: 50px;
+}
+
+.price-box h3 {
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.price-box table {
+  width: auto;         /* 自動サイズ */
+  max-width: 600px;    /* 横幅の上限を設定 */
+  margin: 0 auto;      /* 中央寄せ */
+  border-collapse: collapse;
+  background: #f6fff6;
+}
+
+.price-box th {
+  background: #fceee0;
+  text-align: left;
+  padding: 10px;
+  width: 30%;
+  border: 1px solid #ccc;
+}
+
+.price-box td {
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+
+.steps-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.steps-section h2 {
+  font-size: 28px;
+  margin-bottom: 40px;
+  border-bottom: 2px dashed #6c3;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.steps-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 上段3列 */
+  gap: 20px;
+  justify-items: center;
+}
+
+.step-box {
+  background: #f9f9f9;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.step-title {
+  background: #6c3;
+  color: #333;
+  font-weight: bold;
+  padding: 5px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.step-title span {
+  background: #fff;
+  border: 1px solid #6c3;
+  color: #6c3;
+  padding: 2px 5px;
+  margin-right: 5px;
+  font-size: 12px;
+}
+
+.step-image {
+  border: 2px solid #6c3;
+  padding: 5px;
+  margin-bottom: 10px;
+  background: #fff;
+}
+
+.step-image img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.step-box p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  text-align: left;
+}
+
+/* 下段は中央に2つ配置 */
+.steps-container > .step-box:nth-child(4),
+.steps-container > .step-box:nth-child(5) {
+  grid-column: span 1;
+  justify-self: center;
+}
+
+/* スマホで1列表示 */
+@media (max-width: 600px) {
+  .steps-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+.faq-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.faq-section h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #6c3;
+  display: inline-block;
+  padding: 5px 20px;
+}
+
+.faq-item {
+  border-bottom: 1px solid #6c3;
+  margin-bottom: 10px;
+}
+
+.faq-question {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  font-size: 18px;
+  padding: 15px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-question::after {
+  content: "▼";
+  font-size: 14px;
+  transition: transform 0.3s;
+}
+
+.faq-question.active::after {
+  transform: rotate(180deg);
+}
+
+.faq-answer {
+  display: none;
+  padding: 0 15px 15px;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.faq-answer.open {
+  display: block;
+}
+
+.acc {
+max-width: 900xp;
+margin: 0 auto;
+  padding: 0;
+  width: 100%;
+}
+
+.acc-img {
+  width: 100%;
+  height: auto;
+margin: 0 auto;
+  max-width: none;  /* 拡大を許可 */
+  display: block;
+}
+.acc h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+.access-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.access-box .map {
+  order: 1; /* PC時はマップが先 */
+}
+
+.access-box .info {
+  order: 2; /* PC時はテキストが後 */
+}
+
+/* スマホ用（幅500px以下） */
+@media (max-width: 600px) {
+  .access-box {
+    flex-direction: column; /* 縦並び */
+  }
+
+  .access-box .map {
+    order: 2; /* スマホではマップを後ろに */
+  }
+
+  .access-box .info {
+    order: 1; /* スマホではテキストを先に */
+  }
+}
+
+
+.contact-section {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.contact-section h2 {
+  font-size: 24px;
+  margin-bottom: 15px;
+  border-top: 2px solid #6a3;
+  border-bottom: 2px solid #6a3;
+  display: inline-block;
+  padding: 5px 20px;
+}
+
+.contact-section p {
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+.footer-nav {
+  background: #fff;
+  padding: 15px 20px;
+}
+
+.footer-nav nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 25px;
+}
+
+.footer-nav nav a {
+  text-decoration: none;
+  color: #333;
+  font-size: 16px;
+  white-space: nowrap;
+}
+
+/* スマホ表示 */
+@media (max-width: 768px) {
+  .footer-nav nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+
+
+
+
+/* ------------------------------------------------------------------------------------- */
+
+/* ------------------------------------------------------------------------------------- */
+
+    footer { background: #333; color: #fff; text-align: center; padding: 20px; margin-top: 40px; }
+  </style>
+</head>
+
+
+<body>
+
+<header>
+  <div class="logo">楽笑合同会社</div>
+  <nav id="nav-menu">
+    <a href="#top">TOP</a>
+    <a href="#activity">最近の活動</a>
+    <a href="#about">グループホームについて</a>
+    <a href="#price">入居対象者と料金</a>
+    <a href="#flow">ご利用のながれ</a>
+    <a href="#faq">よくある質問</a>
+    <a href="#facility">施設情報</a>
+    <a href="#contact">お問い合わせ</a>
+  </nav>
+  <div class="tel">TEL <a href="tel:0795203676">0795-20-3676</a></div>
+  <button class="menu-btn" id="menu-btn">☰</button>
+</header>
+
+<section　id="top" class="hero">
+  <img src="images/title.png" alt="タイトル画像" class="hero-img">
+</section>
+
+
+<section class="content-box">
+  <h2>支援について</h2>
+  <p>
+    自分らしく尊厳のある生活が送れるように支援しています。<br>
+    家事などの日常生活の支援、食事・入浴・排泄等の支援、日常生活における相談支援などを行っています。
+  </p>
+</section>
+<section>
+  <h2>空き状況</h2>
+  <table>
+    <tr><th>施設名</th><th>状況</th></tr>
+    <tr><td>ハピネス大野</td><td>満室</td></tr>
+    <tr><td>ハピネス高田井</td><td>満室</td></tr>
+    <tr><td>ハピネス西脇</td><td>満室</td></tr>
+    <tr><td>コロボックル壱番館</td><td>残り1部屋（洋室）</td></tr>
+  </table>
+</section>
+
+<section id="activity">
+  <h2>最近の活動</h2>
+<div class="gallery">
+  <div class="img-box"><img src="images/act20.png" alt=""></div>
+  <div class="img-box"><img src="images/act19.png" alt=""></div>
+  <div class="img-box"><img src="images/act18.png" class="tall pos70" alt=""></div>
+  <div class="img-box"><img src="images/act17.png" class="tall"></div>
+  <div class="img-box"><img src="images/act16.png" class="tall" alt=""></div>
+  <div class="img-box"><img src="images/act15.png" class="tall" alt=""></div>
+  <div class="img-box"><img src="images/act14.png" class="zoom zoom-130 w30" alt=""></div>
+  <div class="img-box"><img src="images/act13.png" alt=""></div>
+  <div class="img-box"><img src="images/act12.png" class="tall" alt=""></div>
+  <div class="img-box"><img src="images/act11.png" class="tall pos30" alt=""></div>
+  <div class="img-box"><img src="images/act10.png" class="zoom zoom-150 w70" alt=""></div>
+  <div class="img-box"><img src="images/act09.png" class="tall pos90" alt=""></div>
+  <div class="img-box"><img src="images/act08.png" alt=""></div>
+  <div class="img-box"><img src="images/act07.png" alt=""></div>
+  <div class="img-box"><img src="images/act06.png" alt=""></div>
+  <div class="img-box"><img src="images/act05.png" class="zoom zoom-110 w10"  alt=""></div>
+  <div class="img-box"><img src="images/act04.png" alt=""></div>
+  <div class="img-box"><img src="images/act03.png" alt=""></div>
+  <div class="img-box"><img src="images/act02.png" alt=""></div>
+  <div class="img-box"><img src="images/act01.png" alt=""></div>
+</div>
+
+  <ul class="news-list">
+    <!-- 以降リスト追加 -->
+    <li>2025.05.10　　　　　3棟集まってBBQをしました！</li>
+    <li>2025.01.22　　　　　入居者の誕生日祝いと退院祝いをしました！</li>
+    <li>2025.01.01　　　　　正月はおもちを食べました！</li>
+    <li>2024.12.24　　　　　それぞれの棟でクリスマスティーをしました！</li>
+    <li>2024.12.01　　　　　入居者のみなさんと姫路に行きました</li>
+    <li>2024.05.24　　　　　本入居1名決定されました</li>
+    <li>2024.05.18　　　　　本入居1名決定されました</li>
+    <li>2024.05.07　　　　　グループホームハピネス西脇がオープンしました！
+    </br>　　　　　　　　　　これから施設見学や体験入居を受け付けていきます</li>
+    <li>2024.02.18　　　　　入居中のみなさんと四国旅行に行きました</li>
+    <li>2024.02.03　　　　　入居中のみなさんと福崎せせらぎの湯に行きました</li>
+    <li>2024.01.07　　　　　入居中のみなさんと初詣に行きました</li>
+    <li>2024.01.02　　　　　入居中のみなさんと神戸観光に行きました</li>
+    <li>2023.12.30　　　　　入居中のみなさんとカラオケ大会を行いました</li>
+    <li>2023.12.20　　　　　本入居1名決定されました</li>
+    <li>2023.11.01　　　　　本入居1名決定されました</li>
+    <li>2023.10.10　　　　　本入居1名決定されました
+    </br>　　　　　　　　　　ハピネス大野は現在満室です</li>
+    <li>2023.10.09　　　　　本入居1名決定されました</li>
+    <li>2023.09.01　　　　　グループホームハピネス高田井がオープンしました！
+    </br>　　　　　　　　　　これから施設見学や体験入居を受け付けていきます</li>
+    <li>2023.09.10　　　　　入居中のみなさんでたこ焼きパーティーを行いました</li>
+    <li>2023.07.02　　　　　入居中のみなさんで親睦会を行いました</li>
+    <li>2023.01.10　　　　　本入居1名決定されました</li>
+    <li>2022.10.15　　　　　近隣住宅の草刈りボランティアを行いました
+    </br>　　　　　　　　　　皆様に大変喜んでいただき、充実した1日となりました</li>
+    <li>2022.09.01　　　　　本入居1名決定されました</li>
+    <li>2022.08.01　　　　　本入居1名決定されました</li>
+    <li>2022.10.15　　　　　日本臓器株式会社様から西脇市を通じて災害用備蓄物資の寄贈がありました
+    </br>　　　　　　　　　　これから避難訓練や色々な事業の啓発活動に使わせていただきたいと考えております
+    </br>　　　　　　　　　　ありがとうございました</li>
+    <li>2022.05.14　　　　　スタッフのワクチン3回接種完了しています</li>
+    <li>2022.04.15　　　　　コロナウイルス感染予防対策を実施しています</li>
+    <li>2022.04.01　　　　　グループホームハピネス大野がオープンしました！
+    </br>　　　　　　　　　　これから施設見学や体験入居を受け付けていきます</li>
+  </ul>
+</section>
+
+<section id="about" class="room-section">
+  <h2>ハピネス大野のお部屋紹介</h2>
+<div class="room-gallery">
+
+  <div>
+    <div class="room-box">
+      <img src="images/oroom1.png" alt="広い共用スペース">
+    </div>
+    <div class="room-info">
+      <h3>広い共用スペース</h3>
+      <p>ナチュラルなインテリアの共用スペース。TVもあります。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/oroom2.png" alt="エアコン付き個室">
+    </div>
+    <div class="room-info">
+      <h3>エアコン付き個室</h3>
+      <p>全室にエアコンを完備しており、オールシーズン快適に生活を送ることができます。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/oroom3.png" alt="浴室">
+    </div>
+    <div class="room-info">
+      <h3>浴室</h3>
+      <p>ジェットバス付きの浴槽が特徴です。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/oroom4.png" alt="キッチン">
+    </div>
+    <div class="room-info">
+      <h3>キッチン</h3>
+      <p>毎日愛情を込めて美味しい食事を提供いたします。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/oroom5.png" alt="光の入る個室">
+    </div>
+    <div class="room-info">
+      <h3>光の入る個室</h3>
+      <p>大きな窓のある明るい空間です。大きな収納も設置しています。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/oroom6.png" alt="洗面所">
+    </div>
+    <div class="room-info">
+      <h3>洗面所</h3>
+      <p>広い洗面所です。</p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<section class="room-section">
+  <h2>ハピネス高田井のお部屋紹介</h2>
+<div class="room-gallery">
+
+  <div>
+    <div class="room-box">
+      <img src="images/kroom1.png" alt="広い共用スペース">
+    </div>
+    <div class="room-info">
+      <h3>広い共用スペース</h3>
+      <p>モダンなインテリアの共用スペース。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/kroom2.png" alt="個室">
+    </div>
+    <div class="room-info">
+      <h3>個室</h3>
+      <p>全室個室でオールシーズン快適に生活を送ることができます。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/kroom3.png" alt="浴室">
+    </div>
+    <div class="room-info">
+      <h3>浴室</h3>
+      <p>広い浴室が特徴です。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/kroom4.png" alt="相談室">
+    </div>
+    <div class="room-info">
+      <h3>相談室</h3>
+      <p>24時間ご相談を受け付けております。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/kroom5.png" alt="和室（個室）">
+    </div>
+    <div class="room-info">
+      <h3>和室（個室）</h3>
+      <p>大きな窓のある明るい空間です。畳が落ち着く空間です。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/kroom6.png" alt="トイレ">
+    </div>
+    <div class="room-info">
+      <h3>トイレ</h3>
+      <p>お洒落な壁紙が特徴のトイレです。</p>
+    </div>
+  </div>
+
+</div>
+</section>
+<section class="room-section">
+  <h2>ハピネス西脇のお部屋紹介</h2>
+<div class="room-gallery">
+
+  <div>
+    <div class="room-box">
+      <img src="images/nroom1.png" alt="明るい共用スペース">
+    </div>
+    <div class="room-info">
+      <h3>明るい共用スペース</h3>
+      <p>ナチュラルなインテリアの共用スペース。TVもあります。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/nroom2.png" alt="光の入る個室">
+    </div>
+    <div class="room-info">
+      <h3>光の入る個室</h3>
+      <p>全室個室でオールシーズン快適に生活を送ることができます。エアコン完備しています。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/nroom3.png" alt="浴室">
+    </div>
+    <div class="room-info">
+      <h3>浴室</h3>
+      <p>広い浴室が特徴です。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/nroom4.png" alt="談室">
+    </div>
+    <div class="room-info">
+      <h3>談室</h3>
+      <p>24時間ご相談を受け付けております。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/nroom5.png" alt="広い個室">
+    </div>
+    <div class="room-info">
+      <h3>広い個室</h3>
+      <p>大きな窓のある明るい空間です。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/nroom6.png" alt="住宅改修済み">
+    </div>
+    <div class="room-info">
+      <h3>住宅改修済み</h3>
+      <p>階段には両手手すりがついています。</p>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<section class="room-section">
+  <h2>コロポックル壱番館のお部屋紹介</h2>
+<div class="room-gallery">
+
+  <div>
+    <div class="room-box">
+      <img src="images/yroom1.png" alt="共用スペース">
+    </div>
+    <div class="room-info">
+      <h3>共用スペース</h3>
+      <p>共用スペース。ＴＶもあります。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/yroom2.png" alt="個室">
+    </div>
+    <div class="room-info">
+      <h3>個室</h3>
+      <p>全室個室でオールシーズン快適に生活を送ることができます。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/yroom3.png" alt="浴室">
+    </div>
+    <div class="room-info">
+      <h3>浴室</h3>
+      <p>改装して広くてきれいな浴室が特徴です。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/yroom4.png" alt="洗面所">
+    </div>
+    <div class="room-info">
+      <h3>洗面所</h3>
+      <p>改装してきれいな洗面所です。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/yroom5.png" alt="トイレ">
+    </div>
+    <div class="room-info">
+      <h3>トイレ</h3>
+      <p>改装してきれいなトイレです。</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="room-box">
+      <img src="images/yroom6.png" alt="住宅改修済み">
+    </div>
+    <div class="room-info">
+      <h3>住宅改修済み</h3>
+      <p>階段には両手手すりがついています。</p>
+    </div>
+  </div>
+
+</div>
+</section>
+<section class="schedule">
+  <h2>グループホームでの平日の暮らし方</h2>
+  <div class="schedule-item">
+    <time>6:00</time>
+    <p>共用室点灯</p>
+  </div>
+  <div class="schedule-item">
+    <time>6:30</time>
+    <p>朝食・内服支援<br>体温・血圧測定</p>
+  </div>
+  <div class="schedule-item">
+    <time>7:00</time>
+    <p>洗濯支援<br>整容支援<br>金銭管理支援</p>
+  </div>
+  <div class="schedule-item">
+    <time>8:00</time>
+    <p>就労支援所への送迎場所に出発</p>
+  </div>
+  <div class="schedule-item">
+    <time>16:00</time>
+    <p>帰宅<br>自室で休憩</p>
+  </div>
+  <div class="schedule-item">
+    <time>17:30</time>
+    <p>入浴支援</p>
+  </div>
+  <div class="schedule-item">
+    <time>19:00</time>
+    <p>夕食・内服支援<br>体温・血圧・体重測定</p>
+  </div>
+  <div class="schedule-item">
+    <time>20:00</time>
+    <p>洗濯支援</p>
+  </div>
+  <div class="schedule-item">
+    <time>22:00</time>
+    <p>就寝薬内服支援<br>就寝準備支援<br>共用室利用終了</p>
+  </div>
+</section>
+
+<section class="schedule">
+  <h2>グループホームでの土日の暮らし方</h2>
+  <div class="schedule-item">
+    <time>6:00</time>
+    <p>共用室点灯</p>
+  </div>
+  <div class="schedule-item">
+    <time>6:30</time>
+    <p>朝食・内服支援<br>体温・血圧測定</p>
+  </div>
+  <div class="schedule-item">
+    <time>10:00</time>
+    <p>自室清掃支援</p>
+  </div>
+  <div class="schedule-item">
+    <time>12:00</time>
+    <p>昼食・内服支援<br>血圧測定</p>
+  </div>
+  <div class="schedule-item">
+    <time>16:00</time>
+    <p>帰宅<br>自室で休憩</p>
+  </div>
+  <div class="schedule-item">
+    <time>17:00</time>
+    <p>体温・血圧・体重測定<br>入浴支援</p>
+  </div>
+  <div class="schedule-item">
+    <time>19:00</time>
+    <p>夕食・内服支援</p>
+  </div>
+  <div class="schedule-item">
+    <time>20:00</time>
+    <p>洗濯支援</p>
+  </div>
+  <div class="schedule-item">
+    <time>22:00</time>
+    <p>就寝薬内服支援<br>就寝準備支援<br>共用室利用終了</p>
+  </div>
+</section>
+<section class="meal-section">
+  <h2>お食事の紹介</h2>
+  <div class="meal-gallery">
+    <!-- 洋朝食 -->
+    <div class="meal-item">
+      <img src="images/mesi1.png" alt="洋朝食の例">
+      <h3>朝食（洋）の一例</h3>
+      <p>
+        主食：大きなバタークロワッサン<br>
+        主菜：スクランブルエッグ　ウインナー<br>
+        副菜：レタス・きゅうり・トマトのサラダ<br>
+        デザート：オレンジゼリー<br>
+        飲み物：ハピネス名物 豆から挽いたコーヒー
+      </p>
+    </div>
+
+    <!-- 和朝食 -->
+    <div class="meal-item">
+      <img src="images/mesi2.png" alt="和朝食の例">
+      <h3>朝食（和）の一例</h3>
+      <p>
+        主食：国産米の白ごはん<br>
+        主菜：卵焼き　ウインナー<br>
+        副菜：レタス・きゅうり・トマトのサラダ<br>
+        副菜：長ネギと豆腐の煮物<br>
+        汁物：玉ねぎとじゃがいものお味噌汁
+      </p>
+    </div>
+
+    <!-- 他の4種類（例だけ追加） -->
+    <div class="meal-item">
+      <img src="images/mesi3.png" alt="昼食の例">
+      <h3>昼食の一例</h3>
+      <p>
+	主食：ちらし寿司<br>
+        主菜：ざるそば<br>
+        副菜：豆腐とオクラの和え物
+      </p>
+    </div>
+
+    <div class="meal-item">
+      <img src="images/mesi4.png" alt="夕食の例">
+      <h3>夕食の一例</h3>
+      <p>
+        主食：国産米の白ごはん<br>
+        主菜：肉じゃが<br>
+        主菜：唐揚げ<br>
+        副菜：キャベツのサラダ<br>
+        副菜：ちくわと切り干し大根の煮物<br>
+        汁物：わかめと大根のお味噌汁
+      </p>
+    </div>
+
+    <div class="meal-item">
+      <img src="images/mesi5.png" alt="夕食の例2">
+      <h3>夕食の一例</h3>
+      <p>
+        主食：国産米の白ごはん<br>
+        主菜：棒棒鶏<br>
+        副菜：レタス・きゅうり・トマトのサラダ<br>
+        副菜：豆腐のきのこ餡かけ<br>
+        副菜：ししとうの甘辛炒め<br>
+        汁物：玉ねぎの中華スープ
+      </p>
+    </div>
+
+    <div class="meal-item">
+      <img src="images/mesi6.png" alt="特別食の例">
+      <h3>イベント時の一例</h3>
+      <p>元旦：おせち料理</p>
+    </div>
+  </div>
+</section>
+
+<section id="price" class="target">
+  <h2>入居対象者と料金</h2>
+  <h3>入居対象者</h3>
+  <div class="target-container">
+    <!-- 左：画像 -->
+    <div class="target-image">
+      <img src="images/tg1.png" alt="入居対象者イメージ">
+    </div>
+    <!-- 右：説明文 -->
+    <div class="target-text">
+      <p>グループホームハピネス・コロポックルの主な対象者は知的障がい者・精神障がい者です。主に療育手帳か障害福祉サービス受給者証をお持ちの18歳〜64歳が対象になります。グループハピネス大野・高田井・西脇では男性、グループホームコロポックル壱番館では女性が対象です。<br>
+他の障害の方もホームで対応できる場合は入居できますのでご相談下さい。<br>
+※世話人が夜間も巡回しており安心して生活できます。現在は、ある程度の身辺自立できる方が入居しています。苦手なことは職員が手伝いますが、掃除、洗濯などは基本的に自分で行います。食事の準備や共有場所（浴室、トイレ等）の掃除など、必要なホームの手伝いにも参加してもらいます。
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="price-section">
+  <!-- 大野 -->
+  <div class="price-box">
+    <h2>ハピネス大野　1ヶ月の料金</h2>
+    <table>
+      <tr>
+        <th>家賃</th>
+        <td>
+1階&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A室　30800円<br>
+2階&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B室　27000円<br>
+　　&nbsp;&nbsp;&nbsp;C室　25000円<br>
+　　&nbsp;&nbsp;&nbsp;D室　25000円
+        </td>
+      </tr>
+      <tr>
+        <th>水道・光熱費</th>
+        <td>17000円 (Wi-Fi 料金込み)</td>
+      </tr>
+      <tr>
+        <th>食費</th>
+        <td>
+          朝　450円<br>
+          昼　450円<br>
+          夜　800円
+        </td>
+      </tr>
+      <tr>
+        <th>日用品・備品等</th>
+        <td>5000円</td>
+      </tr>
+      <tr>
+        <th>管理費</th>
+        <td>0円</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 高田井・西脇 -->
+  <div class="price-box">
+    <h2>ハピネス高田井／ハピネス西脇　1ヶ月の料金</h2>
+    <table>
+      <tr>
+        <th>家賃</th>
+        <td>
+          全室　35000円
+        </td>
+      </tr>
+      <tr>
+        <th>水道・光熱費</th>
+        <td>17000円 (Wi-Fi 料金込み)</td>
+      </tr>
+      <tr>
+        <th>食費</th>
+        <td>
+          朝　450円<br>
+          昼　450円<br>
+          夜　800円
+        </td>
+      </tr>
+      <tr>
+        <th>日用品・備品等</th>
+        <td>5000円</td>
+      </tr>
+      <tr>
+        <th>管理費</th>
+        <td>0円</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 社 -->
+  <div class="price-box">
+    <h2>コロポックル壱番館　1ヶ月の料金</h2>
+    <table>
+      <tr>
+        <th>家賃</th>
+        <td>
+1階&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;A室　30000円<br>
+2階&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;B室　30000円<br>
+　　&nbsp;&nbsp;&nbsp;C室　40000円<br>
+　　&nbsp;&nbsp;&nbsp;D室　40000円
+        </td>
+      </tr>
+      <tr>
+        <th>水道・光熱費</th>
+        <td>17000円 (Wi-Fi 料金込み)</td>
+      </tr>
+      <tr>
+        <th>食費</th>
+        <td>
+          朝　450円<br>
+          昼　450円<br>
+          夜　800円
+        </td>
+      </tr>
+      <tr>
+        <th>日用品・備品等</th>
+        <td>5000円</td>
+      </tr>
+      <tr>
+        <th>管理費</th>
+        <td>0円</td>
+      </tr>
+    </table>
+  </div>
+
+</section>
+
+<section id="flow" class="steps-section">
+  <h2>ご利用の流れ</h2>
+  <div class="steps-container">
+    <div class="step-box">
+      <div class="step-title"><span>STEP 1</span> 相談</div>
+      <div class="step-image"><img src="images/flow1.png" alt="ステップ1"></div>
+      <p>まずはお電話（090-3283-7746  担当者 高瀬）でご相談ください。見学、体験入居を行った上で、グループホームでの生活が可能かどうか判断します。</p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-title"><span>STEP 2</span> 見学・体験入居</div>
+      <div class="step-image"><img src="images/flow2.png" alt="ステップ2"></div>
+      <p>体験入居は通常1週間で、職場や日中活動の場へ通うことが可能か、土日など休日でもグループホームで生活することができるか、他のホーム入居者と共同生活ができるかなどをみます。</p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-title"><span>STEP 3</span> サービス支援申請</div>
+      <div class="step-image"><img src="images/flow3.png" alt="ステップ3"></div>
+      <p>入居可能であれば、相談支援事業所でサービス等利用計画案を作成して、各市町村の障害窓口に、障害福祉サービス（共同生活援助）の支給申請をします。</p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-title"><span>STEP 4</span> 利用契約</div>
+      <div class="step-image"><img src="images/flow4.png" alt="ステップ4"></div>
+      <p>市町村によるサービス支給決定後に、利用契約を交わします。<br>
+
+※グループホームハピネスでは現在、多くの方からお問い合わせがあります。申し込み者が多い場合は、入居判定会議にて入居者を決定します</p>
+    </div>
+
+    <div class="step-box">
+      <div class="step-title"><span>STEP 5</span> 正式入居</div>
+      <div class="step-image"><img src="images/flow5.png" alt="ステップ5"></div>
+      <p>正式入居後は安全で快適な生活を24時間サポートいたします。</p>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="faq-section">
+  <h2>よくある質問</h2>
+
+  <div class="faq-item">
+    <button class="faq-question">グループホームはどのようなところですか？</button>
+    <div class="faq-answer">
+      <p>障害がある方同士が一緒に暮らし、スタッフが食事や洗濯、掃除などの家事を援助し、生活の自立や健康の相談にのってくれたりします。ハウスキーパーが居るシェアハウスのようなイメージです。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">誰でも入居できますか？</button>
+    <div class="faq-answer">
+      <p>グループホームハピネスは、軽度から中度の知的障害、精神障害の方を対象とした男性専用、グループホームコロポックルは軽度から中度の知的障害、精神障害の方を対象とした女性専用ホームです。「障害福祉サービス受給者証」「障害者支援区分」が必要です。お持ちでない方はお住まいの市区町村の障害福祉担当窓口でご相談ください。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">部屋に鍵はついていますか？</button>
+    <div class="faq-answer">
+      <p>個室の鍵は安全管理のため設置しておりません。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">家族や友人を自分の部屋に泊めてもいいですか？</button>
+    <div class="faq-answer">
+      <p>ご家族は泊まっていただけます（事前申請のうえ最大1泊）。ご友人はお泊りいただけません。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">夜勤スタッフはいますか？</button>
+    <div class="faq-answer">
+      <p>はい、もちろんいます。24時間スタッフが常駐しておりますので夜も安心して生活いただけます。<br>
+グループホームコロポックルでは女性スタッフが対応します。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">入居にかかる費用は？</button>
+    <div class="faq-answer">
+      <p>保証金や敷金はいただいておりません。お部屋にはエアコンを設置しております。その他生活に必要な家具や家電はご準備いただいております。入居後は1ヶ月の料金をご参照ください。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">薬の飲み忘れが不安です。</button>
+    <div class="faq-answer">
+      <p>必要であればスタッフが服薬支援を行いますのでご安心ください。</p>
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">急に体調が悪くなったと思うと心配です。</button>
+    <div class="faq-answer">
+      <p>まずは勤務しているスタッフに申し出てください。緊急を要する場合、グループホームの責任者が対応し、必要に応じて病院に搬送します。</p>
+    </div>
+  </div>
+  <!-- 以下、同じ形でつくる -->
+</section>
+
+<section id="facility" class="acc">
+  <h2>施設情報</h2>
+  <img src="images/int.png" alt="事業所画像" class="acc-img">
+</section>
+
+<section class="access-section">
+
+  <div class="access-box">
+    <div class="map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13072.841896695812!2d134.97260335367162!3d35.0014360650251!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35554abd09232553%3A0xe4398b032af2aeaa!2z44CSNjc3LTAwMjUg5YW15bqr55yM6KW_6ISH5biC5aSn6YeO77yU77yW77yX4oiS77yU!5e0!3m2!1sja!2sjp!4v1758489827506!5m2!1sja!2sjp" 
+        width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="info">
+      <p><strong>グループホームハピネス大野</strong></p>
+      <p>〒677-0025<br>兵庫県西脇市大野467-4</p>
+      <p>TEL <a href="tel:0795203676">0795-20-3676</a></p>
+      <p>管理責任者（高瀬） <a href="tel:09032837746">090-3283-7746</a></p>
+    </div>
+  </div>
+
+  <div class="access-box">
+    <div class="map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13075.02757148216!2d134.9551547536609!3d34.98775366510076!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35553576fd75f46d%3A0x6e32baf4ffae86c5!2z44CSNjc3LTAwMTYg5YW15bqr55yM6KW_6ISH5biC6auY55Sw5LqV55S677yR77yX4oiS77yU!5e0!3m2!1sja!2sjp!4v1758490137350!5m2!1sja!2sjp" 
+        width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="info">
+      <p><strong>グループホームハピネス高田井</strong></p>
+      <p>〒677-0016<br>兵庫県西脇市高田井町17-4</p>
+      <p>TEL <a href="tel:07952036767">0795-20-3676</a></p>
+      <p>管理責任者（高瀬）  <a href="tel:09032837746">090-3283-7746</a></p>
+    </div>
+  </div>
+
+  <div class="access-box">
+    <div class="map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13074.588735977375!2d134.96413915366298!3d34.99050116508558!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3555356382232811%3A0x912c68e6ba3c246e!2z44CSNjc3LTAwMTUg5YW15bqr55yM6KW_6ISH5biC6KW_6ISH77yX77yR77yS4oiS77yT!5e0!3m2!1sja!2sjp!4v1758491423655!5m2!1sja!2sjp"
+ width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="info">
+      <p><strong>グループホームハピネス西脇</strong></p>
+      <p>〒677-0015<br>兵庫県西脇市西脇712-3</p>
+      <p>TEL <a href="tel:0795201682">0795-20-1682</a></p>
+      <p>管理責任者（高瀬） <a href="tel:09032837746">090-3283-7746</a></p>
+    </div>
+  </div>
+
+  <div class="access-box">
+    <div class="map">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13086.96148172995!2d134.95991105360253!3d34.91296446551601!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x35553371863a4d33%3A0xde342a809ffdeeba!2z44CSNjczLTE0MzIg5YW15bqr55yM5Yqg5p2x5biC44Gy44KN44Gu44GM5LiY77yT4oiS77yR77yS!5e0!3m2!1sja!2sjp!4v1758491480116!5m2!1sja!2sjp"
+        width="300" height="200" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="info">
+      <p><strong>グループホームコロポックル壱番館(女子棟)</strong></p>
+      <p>〒673-1432<br>兵庫県加東市ひろのが丘3-12</p>
+      <p>TEL <a href="tel:07952036767">0795-20-3676</a></p>
+      <p>FAX 0795-20-8201</p>
+    </div>
+  </div>
+
+  <!-- 同じ要領で合計4つ -->
+</section>
+<section id="contact" class="contact-section">
+  <h2>お問い合わせ</h2>
+  <p>お問い合わせは、管理責任者へお電話（TEL <a href="tel:09032837746">090-3283-7746</a>）にてお問い合わせください。</p>
+
+  <div class="footer-nav">
+    <nav>
+      <a href="#news">お知らせ</a>
+      <a href="#about">グループホームハピネスについて</a>
+      <a href="#price">料金と入居対象者</a>
+      <a href="#flow">ご利用のながれ</a>
+      <a href="#faq">よくある質問</a>
+      <a href="#facility">施設情報</a>
+    </nav>
+  </div>
+</section>
+
+
+<footer>
+  <p>&copy; 楽笑合同会社　グループホームハピネス大野</p>
+</footer>
+
+<script>
+const menuBtn = document.getElementById("menu-btn");
+const navMenu = document.getElementById("nav-menu");
+
+// メニューボタンを押したら開閉
+menuBtn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  navMenu.classList.toggle("active");
+});
+
+// リンクを押したら閉じる
+document.querySelectorAll("#nav-menu a").forEach(link => {
+  link.addEventListener("click", () => {
+    navMenu.classList.remove("active");
+  });
+});
+
+// 外を押したら閉じる
+document.addEventListener("click", (e) => {
+  if (navMenu.classList.contains("active")) {
+    if (!navMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+      navMenu.classList.remove("active");
+    }
+  }
+});
+
+  document.querySelectorAll(".faq-question").forEach(button => {
+    button.addEventListener("click", () => {
+      const answer = button.nextElementSibling;
+      button.classList.toggle("active");
+      answer.classList.toggle("open");
+    });
+  });
+</script>
+
+
+</body>
+</html>
